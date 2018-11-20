@@ -2,7 +2,10 @@ package persistence;
 
 import core.TodoItem;
 import core.TodoList;
+import org.apache.commons.io.FileUtils;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 public class PersistenceText implements Persistence {
@@ -16,7 +19,12 @@ public class PersistenceText implements Persistence {
             builder.append(item.getText() + "\n");
         }
 
-        System.out.println(builder.toString());
+        File file = new File("data/todo.txt");
+        try {
+            FileUtils.writeStringToFile(file,builder.toString(),"UTF-8");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
