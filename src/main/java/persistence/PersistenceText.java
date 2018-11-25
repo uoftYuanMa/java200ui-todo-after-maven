@@ -24,7 +24,7 @@ public class PersistenceText implements Persistence {
         File file = new File("data/todo.txt");
         try {
             //把builder里的东西存到file里
-            FileUtils.writeStringToFile(file,builder.toString(),"UTF-8");
+            FileUtils.writeStringToFile(file, builder.toString(), "UTF-8");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -32,6 +32,28 @@ public class PersistenceText implements Persistence {
 
     @Override
     public TodoList read() {
-        return null;
+        //把disc上的byte[] 转换为 memory上的 String
+        File file = new File("data/todo.txt");
+
+        if(!file.exists()){
+            return null;
+        }
+        String data = "";
+        try {
+            data = FileUtils.readFileToString(file, "UTF-8");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        String[] parts = data.split("\n");
+        String title = parts[0];
+        TodoList todoList = new TodoList();
+        todoList.setTitle(title);
+        for (int i = 1; i < parts.length; i++) {
+            String todoText = parts[i];
+            TodoItem todoItem = new TodoItem();
+            todoItem.setText(todoText);
+            todoList.add(todoItem);
+        }
+        return todoList;
     }
 }
