@@ -8,10 +8,13 @@ import core.Repository;
 import core.TodoItem;
 import core.TodoList;
 import persistence.Persistence;
+import persistence.PersistenceJson;
 import persistence.PersistenceText;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 
 public class MainView extends View {
@@ -32,7 +35,8 @@ public class MainView extends View {
     //显示页面总标题
     private Label titleLabel;
 
-    private Persistence persistence = new PersistenceText();
+    private Persistence persistence = new PersistenceJson();
+    int id = 0;
 
     @Override
     protected void init() {
@@ -40,6 +44,12 @@ public class MainView extends View {
         super.init();
         //调用静态方法，list里面现在有一个加载好的有1个标题，及3个TodoItem
         list = Repository.todolist;
+//        if(list.getItems() == null){
+//            id = 0;
+//        }else{
+//            List<TodoItem> items = list.getItems();
+//             id = items.get(items.size() - 1).getId()+1;
+//        }
     }
 
     @Override
@@ -73,7 +83,7 @@ public class MainView extends View {
         inputView.add(textField);
     }
 
-    int id = 3;
+
     @Override
     protected void initEvents() {
         super.initEvents();
@@ -84,6 +94,12 @@ public class MainView extends View {
                 String text = textField.getText();
                 TodoItem todoItem = new TodoItem();
                 todoItem.setText(text);
+                if (list.getItems() == null) {
+                    id = 0;
+                } else {
+                    List<TodoItem> items = list.getItems();
+                    id = items.get(items.size() - 1).getId() + 1;
+                }
                 todoItem.setId(id);
                 list.add(todoItem);
                 //  sync ui
@@ -131,9 +147,10 @@ public class MainView extends View {
 //            y += label.getHeight() + paddingNormal;
             //button
             Button button = new Button("Delete");
+            //与core建立联系
             button.setSubtitle(String.valueOf(todoItem.getId()));
-            button.setLocation(2*paddingNormal+label.getWidth(),y);
-            button.setSize(80,cellHeight);
+            button.setLocation(2 * paddingNormal + label.getWidth(), y);
+            button.setSize(80, cellHeight);
             y += label.getHeight() + paddingNormal;
             containerView.add(button);
             //设置监听
@@ -145,14 +162,15 @@ public class MainView extends View {
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                 int todoItemId = Integer.parseInt(button.getSubtitle());
-                 for(int i = 0 ; i < list.getItems().size() ;i++){
-                     if(list.getItems().get(i).getId() == todoItemId){
-                         list.getItems().remove(i);
-                         dataToView();
-                         break;
-                     }
-                 }
+                int todoItemId = Integer.parseInt(button.getSubtitle());
+                for (int i = 0; i < list.getItems().size(); i++) {
+                    if (list.getItems().get(i).getId() == todoItemId) {
+                        list.getItems().remove(i);
+                        dataToView();
+                        persistence.save(list);
+                        break;
+                    }
+                }
             }
         });
     }
