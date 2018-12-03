@@ -7,7 +7,8 @@ import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-
+//用自己写框架的方式实现持久化
+//自己写格式
 public class PersistenceText implements Persistence {
     @Override
     public void save(TodoList todoList) {

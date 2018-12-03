@@ -10,6 +10,7 @@ import core.TodoList;
 import persistence.Persistence;
 import persistence.PersistenceJson;
 import persistence.PersistenceText;
+import service.TodoService;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -35,7 +36,8 @@ public class MainView extends View {
     //显示页面总标题
     private Label titleLabel;
 
-    private Persistence persistence = new PersistenceJson();
+    //private Persistence persistence = new PersistenceJson();
+    private TodoService service;
     int id = 0;
 
     @Override
@@ -43,7 +45,9 @@ public class MainView extends View {
         //页面总高，宽，背景
         super.init();
         //调用静态方法，list里面现在有一个加载好的有1个标题，及3个TodoItem
-        list = Repository.todolist;
+        //list = Repository.todolist;
+        service  = new TodoService();
+        list = service.get();
 //        if(list.getItems() == null){
 //            id = 0;
 //        }else{
@@ -101,7 +105,8 @@ public class MainView extends View {
                     id = items.get(items.size() - 1).getId() + 1;
                 }
                 todoItem.setId(id);
-                list.add(todoItem);
+                service.add(todoItem);
+                //list.add(todoItem);
                 //  sync ui
                 //  delete 3 label
                 MainView.this.remove(containerView);
@@ -110,7 +115,7 @@ public class MainView extends View {
                 //  clean ui
                 textField.setText("");
                 //  push data to disk
-                persistence.save(list);
+                //persistence.save(list);
                 id++;
             }
         });
@@ -165,9 +170,11 @@ public class MainView extends View {
                 int todoItemId = Integer.parseInt(button.getSubtitle());
                 for (int i = 0; i < list.getItems().size(); i++) {
                     if (list.getItems().get(i).getId() == todoItemId) {
-                        list.getItems().remove(i);
+                        //list.getItems().remove(i);
+                        service.remove(i);
+                        MainView.this.remove(containerView);
                         dataToView();
-                        persistence.save(list);
+                        //persistence.save(list);
                         break;
                     }
                 }
