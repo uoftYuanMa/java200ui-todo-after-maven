@@ -74,20 +74,22 @@ public class PersistenceJson implements Persistence {
             e.printStackTrace();
         }
         // string -> object
-        JsonObject jsonObject = new Gson().fromJson(data, JsonObject.class);
-        TodoList todoList = new TodoList();
-        todoList.setTitle(jsonObject.get("title").getAsString());
-        //把Json中的items的 “值”以JsonArray读回来
-        JsonArray itemsJson = jsonObject.getAsJsonArray("items");
-        //JsonArray JsonObject 都继承JsonElement
-        for (JsonElement itemJson : itemsJson) {
-            TodoItem item = new TodoItem();
-            String text = itemJson.getAsJsonObject().get("text").getAsString();
-            int id = itemJson.getAsJsonObject().get("id").getAsInt();
-            item.setText(text);
-            item.setId(id);
-            todoList.add(item);
-        }
+//        JsonObject jsonObject = new Gson().fromJson(data, JsonObject.class);
+//        TodoList todoList = new TodoList();
+//        todoList.setTitle(jsonObject.get("title").getAsString());
+//        //把Json中的items的 “值”以JsonArray读回来
+//        JsonArray itemsJson = jsonObject.getAsJsonArray("items");
+//        //JsonArray JsonObject 都继承JsonElement
+//        for (JsonElement itemJson : itemsJson) {
+//            TodoItem item = new TodoItem();
+//            String text = itemJson.getAsJsonObject().get("text").getAsString();
+//            int id = itemJson.getAsJsonObject().get("id").getAsInt();
+//            item.setText(text);
+//            item.setId(id);
+//            todoList.add(item);
+//        }
+        System.out.println(data);
+        TodoList todoList = new Gson().fromJson(data, TodoList.class);
         return todoList;
     }
 }

@@ -27,7 +27,9 @@ public class RequestHandler {
         //构建回request
         Request request = new Request(action);
         request.setData(data);
+        route(request);
     }
+    //解读request
     private void route(Request request){
         if(request.getAction().equals("todo get")){
             new TodoController().get(request);

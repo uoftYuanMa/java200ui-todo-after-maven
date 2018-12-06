@@ -5,7 +5,7 @@ import common.model.TodoItem;
 import common.model.TodoList;
 import server.persistence.Persistence;
 import server.persistence.PersistenceJson;
-
+//marshalling
 public class TodoService {
     //调用persistence
     public TodoList get() {
@@ -16,6 +16,8 @@ public class TodoService {
             todoList = new TodoList();
             todoList.setTitle("todo");
         }
+        //检查发送的连通性
+        System.out.println(todoList);
         return todoList;
     }
 
