@@ -2,6 +2,7 @@ package common.net;
 
 public class Response {
     private String status;
+    //json格式字符串
     private String data;
 
     public static final String statusOk = "ok";
