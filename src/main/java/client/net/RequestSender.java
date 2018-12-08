@@ -16,6 +16,12 @@ public class RequestSender {
             Connector connector = new Connector(socket);
             connector.writeLine(request.getAction());
             connector.writeLine(request.getData());
+
+            String status = connector.readLine();
+            String data = connector.readLine();
+            Response response = new Response(status);
+            response.setData(data);
+            return response;
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -1,6 +1,7 @@
 package server.net;
 
 import common.net.Request;
+import common.net.Response;
 import io.zzax.jadeite.net.Connector;
 import server.controller.TodoController;
 
@@ -27,12 +28,13 @@ public class RequestHandler {
         //构建回request
         Request request = new Request(action);
         request.setData(data);
-        route(request);
+        Response response = route(request);
     }
     //解读request
-    private void route(Request request){
+    private Response route(Request request){
         if(request.getAction().equals("todo get")){
-            new TodoController().get(request);
+            return new TodoController().get(request);
         }
+        return new Response(Response.statusActionNotFound);
     }
 }

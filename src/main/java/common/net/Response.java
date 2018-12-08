@@ -6,6 +6,7 @@ public class Response {
     private String data;
 
     public static final String statusOk = "ok";
+    public static final String statusActionNotFound = "actionNotFound";
 
     public Response(String status) {
         this.status = status;
