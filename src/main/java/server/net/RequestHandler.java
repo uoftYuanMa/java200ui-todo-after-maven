@@ -28,7 +28,10 @@ public class RequestHandler {
         //构建回request
         Request request = new Request(action);
         request.setData(data);
+        //下一句话执行完 收到json格式的string
         Response response = route(request);
+        connector.writeLine(response.getStatus());
+        connector.writeLine(response.getData());
     }
     //解读request
     private Response route(Request request){
